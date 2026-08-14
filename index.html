@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔮 เซียมซีดูดวงประจำวัน</title>
+    <style>
+        body {
+            font-family: 'Takhoma', 'Kanit', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 { color: #facc15; margin-bottom: 10px; }
+        .btn {
+            background: linear-gradient(45deg, #a855f7, #6366f1);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+        .btn:hover { transform: scale(1.05); }
+        .result {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .result p { margin: 8px 0; line-height: 1.5; }
+        .badge { color: #38bdf8; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🔮 ดูดวงประจำวัน</h1>
+    <p>กดปุ่มด้านล่างเพื่อเสี่ยงทายดวงชะตาของคุณ</p>
+    <button class="btn" onclick="drawHoroscope()">สุ่มเขย่าเซียมซี</button>
+
+    <div class="result" id="resultBox">
+        <h3 id="luckTitle" style="text-align: center; color: #facc15;"></h3>
+        <p>💼 <b>การงาน:</b> <span id="workText"></span></p>
+        <p>💰 <b>การเงิน:</b> <span id="financeText"></span></p>
+        <p>❤️ <b>ความรัก:</b> <span id="loveText"></span></p>
+        <p>🩺 <b>สุขภาพ:</b> <span id="healthText"></span></p>
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+        <p>🎨 <b>สีมงคล:</b> <span id="colorText" class="badge"></span></p>
+        <p>🔢 <b>เลขนำโชค:</b> <span id="numberText" class="badge"></span></p>
+    </div>
+</div>
+
+<script>
+    const data = [
+        {
+            title: "มหาโชค (Great Luck) 🌟🌟🌟🌟🌟",
+            work: "งานทะลุเป้า โปรเจกต์ผ่านราบรื่น มีเกณฑ์ได้รับการยอมรับสูงมาก",
+            finance: "ลาภลอยโดดเด่น มีโอกาสได้ผลตอบแทนเกินคาด",
+            love: "เสน่ห์แรง คนมีคู่เข้าใจกันดี คนโสดมีเกณฑ์เจอคนโปรไฟล์ดี",
+            health: "พลังงานเต็มเปี่ยม ร่างกายสดชื่น"
+        },
+        {
+            title: "โชคดี (Good Luck) 🌟🌟🌟🌟",
+            work: "การงานดำเนินไปได้ด้วยดี มีคนคอยสนับสนุนเมื่อติดขัด",
+            finance: "การเงินคล่องตัว สภาพคล่องดี ไม่ตึงมือ",
+            love: "ความสัมพันธ์ราบเรียบแต่ลึกซึ้ง พึ่งพาอาศัยกันได้ดี",
+            health: "แข็งแรงดี แต่อาจมีพักผ่อนน้อยนิดหน่อย"
+        },
+        {
+            title: "ปานกลาง (Neutral) 🌟🌟🌟",
+            work: "เรื่อยๆ มาทรงๆ ต้องใช้ความอดทนและรอบคอบมากกว่าปกติ",
+            finance: "รายรับพอดีรายจ่าย วางแผนการเงินให้ดี หลีกเลี่ยงการเสี่ยงโชคหนัก",
+            love: "คนโสดเรื่อยๆ ไม่รีบร้อน คนมีคู่อาจมีความเห็นไม่ตรงกันเล็กน้อย",
+            health: "ระวังเรื่อง Office Syndrome หรืออาการปวดเมื่อย"
+        }
+    ];
+
+    const colors = ["น้ำเงินเข้ม", "เขียวเหนี่ยวทรัพย์", "ส้มสดใส", "เทาเงิน", "ทองร่ำรวย"];
+
+    function drawHoroscope() {
+        const item = data[Math.floor(Math.random() * data.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const num = Math.floor(Math.random() * 90 + 10);
+
+        document.getElementById("luckTitle").innerText = item.title;
+        document.getElementById("workText").innerText = item.work;
+        document.getElementById("financeText").innerText = item.finance;
+        document.getElementById("loveText").innerText = item.love;
+        document.getElementById("healthText").innerText = item.health;
+        document.getElementById("colorText").innerText = color;
+        document.getElementById("numberText").innerText = num;
+
+        document.getElementById("resultBox").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
