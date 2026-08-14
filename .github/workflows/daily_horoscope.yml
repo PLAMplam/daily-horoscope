@@ -1,0 +1,32 @@
+name: Daily Horoscope Generator
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # ตั้งรันอัตโนมัติทุกวันเวลา 07:00 น. (เวลาไทย)
+  workflow_dispatch:      # ปุ่มกดสั่งรันด้วยมือ (Manual Run)
+
+jobs:
+  horoscope:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # สิทธิ์บันทึกประวัติลงไฟล์ใน Repo
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Run Horoscope Script
+        run: python main.py
+
+      - name: Commit & Push History
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add horoscope_history.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "update: daily horoscope log [skip ci]" && git push)
